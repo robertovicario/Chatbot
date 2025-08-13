@@ -1,28 +1,27 @@
-# FlaskApp
+# Chatbot
 
 ## Overview
 
-This project is a simple Flask application that serves as a template for building web applications. It includes a basic structure with Docker support for easy deployment and development.
+...
 
 ## Prerequisites
 
 > [!IMPORTANT]
 >
 > - Docker
-> - Docker Compose
 
 ## User Interface (UI)
 
-| <a href="https://www.robertovicario.com/FlaskApp"><img src="./docs/cover.png" alt="UI" width="384"></a> |
+| <a href="https://robertovicario-chatbot.hf.space"><img src="./docs/cover.png" alt="UI" width="384"></a> |
 | :-: |
-| **Home - FlaskApp** |
+| **Home - Chatbot** |
 
 ## Instructions
 
 Usage:
 
 ```sh
-bash cmd.sh {start|stop|setup|clear}
+bash cmd.sh {start|stop|setup|clear|build|deploy}
 ```
 
 ### `setup`
@@ -33,11 +32,11 @@ If you haven't built the project yet, you can do so by running:
 bash cmd.sh setup
 ```
 
-Once the setup process is complete, the project will be accessible at `localhost:8000`.
+Once the setup process is complete, the project will be accessible at `localhost:7860`.
 
 > [!WARNING]
 >
-> If this port is already in use, search for all occurrences of `8000` within the project and replace them with your preferred port number. After making these changes, you'll need to rebuild the project for the modifications to take effect.
+> If this port is already in use, search for all occurrences of `7860` within the project and replace them with your preferred port number. After making these changes, you'll need to rebuild the project for the modifications to take effect.
 
 ### `start`
 
@@ -65,6 +64,26 @@ If you need to clear all containers and their orphaned dependencies, you can run
 ```sh
 bash cmd.sh clear
 ```
+
+### `build`
+
+To generate the static files for the project, run the following command:
+
+```sh
+bash cmd.sh build
+```
+
+After the build process completes, the static files will be available in the `./app/build` directory.
+
+### `deploy`
+
+To deploy the application to production, you can use the following command:
+
+```sh
+bash cmd.sh deploy
+```
+
+This project leverages GitHub Actions for CI/CD. The deployment workflow is configured to automatically build the project and deploy it to the HuggingFace Spaces environment.
 
 ## License
 
