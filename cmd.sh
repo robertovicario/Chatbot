@@ -4,11 +4,8 @@ VENV_DIR="venv"
 
 start() {
     printer "🚀 Starting the app"
-    docker run --rm --name app-chatbot \
-        -p 7860:7860 \
-        -v $(pwd)/app:/app \
-        app-chatbot \
-        flask run --host=0.0.0.0 --port=7860 --reload
+    docker build -t app-chatbot .
+    docker run --rm --name app-chatbot -p 7860:7860 app-chatbot
     handler
 }
 
