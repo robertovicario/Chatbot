@@ -1,7 +1,7 @@
 /* Root */
 
 :root {
-	--primary: #bdbf09;
+	--primary: #23ce6b;
 }
 
 ::selection {
@@ -11,6 +11,7 @@
 
 body {
 	font-family: "Noto Sans", sans-serif !important;
+	overflow: hidden !important;
 }
 
 a {
