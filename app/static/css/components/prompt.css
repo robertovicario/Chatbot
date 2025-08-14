@@ -1,0 +1,21 @@
+/* Prompt */
+
+.btn-prompt {
+    width: 58px !important;
+    height: 48px !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 100% !important;
+}
+
+.btn-prompt i {
+    font-size: 1.25rem;
+}
+
+.input-prompt {
+    width: 100% !important;
+    height: 48px !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    border: 0 !important;
+}

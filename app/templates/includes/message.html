@@ -1,0 +1,4 @@
+<!-- Message -->
+{% macro message(msg) %}
+<div class="message-{{ 'user' if msg.role == 'user' else 'bot' }}">{{ msg.content }}</div>
+{% endmacro %}

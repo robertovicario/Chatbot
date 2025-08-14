@@ -7,6 +7,8 @@
 <!-- Jinja :: Styles -->
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/components/chat.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/components/prompt.css') }}">
 {% endblock %}
 
 <!-- Jinja :: Content -->
@@ -17,36 +19,34 @@
     <div class="bg-white w-25 h-100 p-3 border rounded-5"></div>
 
     <!-- Content -->
-    <div class="bg-white w-75 h-100 p-5 border rounded-5">
+    <div class="bg-white w-75 h-100">
         <div class="d-flex flex-column h-100">
 
             <!-- Chat -->
             <div class="d-flex bg-white flex-grow-1 overflow-auto">
-                <div class="d-flex flex-column bg-white w-100 h-100 p-3 flex-grow-1 overflow-auto">
-                    <div class="d-flex align-self-start mb-3 px-3 py-2 bg-light text-black text-break rounded-4" style="max-width: 50% !important;">message</div>
-                    <div class="d-flex align-self-end mb-3 px-3 py-2 bg-primary text-white text-break rounded-4" style="max-width: 50% !important;">message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle</div>
-                    <div class="d-flex align-self-start mb-3 px-3 py-2 bg-light text-black text-break rounded-4" style="max-width: 50% !important;">message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle</div>
-                    <div class="d-flex align-self-end mb-3 px-3 py-2 bg-primary text-white text-break rounded-4" style="max-width: 50% !important;">message</div>
-                    <div class="d-flex align-self-start mb-3 px-3 py-2 bg-light text-black text-break rounded-4" style="max-width: 50% !important;">message</div>
-                    <div class="d-flex align-self-end mb-3 px-3 py-2 bg-primary text-white text-break rounded-4" style="max-width: 50% !important;">message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle</div>
-                    <div class="d-flex align-self-start mb-3 px-3 py-2 bg-light text-black text-break rounded-4" style="max-width: 50% !important;">message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle</div>
-                    <div class="d-flex align-self-end mb-3 px-3 py-2 bg-primary text-white text-break rounded-4" style="max-width: 50% !important;">message</div>
-                    <div class="d-flex align-self-start mb-3 px-3 py-2 bg-light text-black text-break rounded-4" style="max-width: 50% !important;">message</div>
-                    <div class="d-flex align-self-end mb-3 px-3 py-2 bg-primary text-white text-break rounded-4" style="max-width: 50% !important;">message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle</div>
-                    <div class="d-flex align-self-start mb-3 px-3 py-2 bg-light text-black text-break rounded-4" style="max-width: 50% !important;">message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle message too long to handle</div>
-                    <div class="d-flex align-self-end mb-3 px-3 py-2 bg-primary text-white text-break rounded-4" style="max-width: 50% !important;">message</div>
+                <div class="d-flex flex-column bg-white w-100 h-100 p-3 flex-grow-1 overflow-auto px-5">
+                    {% import 'includes/message.html' as macros %}
+                    {% for msg in conversation %}
+                        {{ macros.message(msg) }}
+                    {% endfor %}
                 </div>
             </div>
 
             <!-- Prompt -->
-            <form>
-                <div class="d-flex input-group gap-3">
-                    <div class="form-floating">
-                        <input type="text" class="form-control px-4 rounded-pill" placeholder="">
-                        <label class="px-4">Ask me anything you want, I am at your service</label>
-                    </div>
-                    <button class="btn btn-primary rounded-circle" type="submit">
-                        <span class="bi bi-send fs-5"></span>
+            <form class="m-0">
+                <div class="d-flex justify-content-center align-items-center gap-3 p-3 px-4 border rounded-pill">
+                    <input class="input-prompt" type="text" placeholder="Ask me anything you want, I am at your service">
+                    <button id="btn-prompt-attach" class="btn btn-light btn-prompt" type="button" name="btn-prompt-attach" title="Attach">
+                        <input type="file" class="d-none">
+                        <i class="bi bi-paperclip"></i>
+                    </button>
+                    <script>
+                        document.getElementById('btn-prompt-attach').addEventListener('click', () => {
+                            document.querySelector('#btn-prompt-attach input[type="file"]').click();
+                        });
+                    </script>
+                    <button class="btn btn-primary btn-prompt" type="submit" name="btn-prompt-submit" title="Send">
+                        <i class="bi bi-arrow-up"></i>
                     </button>
                 </div>
             </form>
