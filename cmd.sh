@@ -38,7 +38,7 @@ deploy() {
     cp .gitignore Chatbot
     cp Dockerfile Chatbot
     cp app/README.md Chatbot
-    rm -f app/README.md
+    rm -f Chatbot/app/README.md
     cd Chatbot
     git checkout main
     git add .
