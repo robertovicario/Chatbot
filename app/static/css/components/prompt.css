@@ -1,6 +1,11 @@
-/* Prompt */
+/* Prompt :: Components */
 
 .btn-prompt {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 42px !important;
+    height: 42px !important;
     border: none !important;
     border-radius: 100% !important;
 }

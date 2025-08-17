@@ -13,6 +13,10 @@
 
 <!-- Jinja :: Content -->
 {% block content %}
+
+<!-- Jinja :: Spinner Page -->
+{% include 'includes/spinner-page.html' %}
+
 <div class="d-flex justify-content-center align-items-center w-100 vh-100 p-5 gap-5">
 
     <!-- Sidebar -->
@@ -33,9 +37,9 @@
             </div>
 
             <!-- Prompt -->
-            <form class="m-0">
+            <form id="form-prompt" class="m-0">
                 <div class="d-flex justify-content-center align-items-center gap-3 p-3 px-4 border rounded-pill">
-                    <input class="input-prompt" type="text" placeholder="Ask me anything you want, I am at your service">
+                    <input class="input-prompt" type="text" placeholder="Ask me anything you want, I am at your service" required>
                     <button id="btn-prompt-attach" class="btn btn-light btn-prompt" type="button" name="btn-prompt-attach" title="Attach">
                         <input type="file" class="d-none">
                         <i class="bi bi-paperclip"></i>
@@ -45,7 +49,7 @@
                             document.querySelector('#btn-prompt-attach input[type="file"]').click();
                         });
                     </script>
-                    <button class="btn btn-primary btn-prompt" type="submit" name="btn-prompt-submit" title="Send">
+                    <button id="btn-prompt-submit" class="btn btn-primary btn-prompt" type="button" name="btn-prompt-submit" title="Send">
                         <i class="bi bi-arrow-up"></i>
                     </button>
                 </div>

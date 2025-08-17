@@ -9,7 +9,7 @@
     
     <!-- Theme -->
     <title>{{ theme_title }}</title>
-    <meta name="theme-color" content="#BDBF09"/>
+    <meta name="theme-color" content="#96e072"/>
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicons/favicon-16x16.png') }}"/>
@@ -45,11 +45,24 @@
         {% block content %}{% endblock %}
     </div>
 
+    <!-- Jinja :: Flash -->
+    {% include 'includes/flash.html' %}
+
+    <!-- Jinja :: Modals -->
+    {% block modals %}{% endblock %}
+
+
     <!-- Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
 
     <!-- Components -->
     <script src="{{ url_for('static', filename='js/components/copyright.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/dropdown.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/flash.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/spinner_page.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/spinner.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/theme_mode.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/tooltip.js') }}"></script>
 
     <!-- Jinja :: Scripts -->
     {% block scripts %}{% endblock %}

@@ -5,7 +5,10 @@
 /////////////////////////
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('copyright').innerHTML = document.getElementById('copyright').innerHTML.replace('YYYY', new Date().getFullYear());
+    const spanYear = document.getElementById('span-year');
+    if (spanYear) {
+        spanYear.innerHTML = new Date().getFullYear();
+    }
 });
 
 /////////////////////////
