@@ -24,19 +24,6 @@ setup() {
     handler
 }
 
-build() {
-    printer "🔧 Building the app"
-    mkdir -p build
-    rm -rf build/*
-    cp -r app build/app
-    rm -f build/app/README.md
-    cp .gitattributes build
-    cp .gitignore build
-    cp Dockerfile build
-    cp app/README.md build
-    handler
-}
-
 clear() {
     printer "🧹 Clearing all"
     rm -rf $VENV_DIR
@@ -46,13 +33,13 @@ clear() {
 
 deploy() {
     printer "📦 Deploying the app"
-    rm -rf chatbot/*
-    cp -r app chatbot/app
-    cp .gitattributes chatbot
-    cp .gitignore chatbot
-    cp Dockerfile chatbot
-    cp app/README.md chatbot
-    cd chatbot
+    rm -rf Chatbot/*
+    cp -r app Chatbot/app
+    cp .gitignore Chatbot
+    cp Dockerfile Chatbot
+    cp app/README.md Chatbot
+    rm -f app/README.md
+    cd Chatbot
     git checkout main
     git add .
     git commit -m "Deployed the app"
@@ -91,9 +78,6 @@ case $1 in
     setup)
         setup
         ;;
-    build)
-        build
-        ;;
     clear)
         clear
         ;;
@@ -101,6 +85,6 @@ case $1 in
         deploy
         ;;
     *)
-        echo "Usage: $0 {start|stop|setup|build|clear|deploy}"
+        echo "Usage: $0 {start|stop|setup|clear|deploy}"
         ;;
 esac
