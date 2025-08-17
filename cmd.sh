@@ -4,14 +4,13 @@ VENV_DIR="venv"
 
 start() {
     printer "🚀 Starting the app"
-    docker build -t app-chatbot .
-    docker run --rm --name app-chatbot -p 7860:7860 app-chatbot
+    docker-compose up
     handler
 }
 
 stop() {
     printer "🛑 Stopping the app"
-    docker stop app-chatbot
+    docker-compose down
     handler
 }
 
@@ -21,8 +20,7 @@ setup() {
     source $VENV_DIR/bin/activate
     pip install --upgrade pip
     git submodule update --init --recursive
-    docker build -t app-chatbot .
-    docker run --rm --name app-chatbot -p 7860:7860 app-chatbot
+    docker-compose up --build
     handler
 }
 
@@ -42,8 +40,7 @@ build() {
 clear() {
     printer "🧹 Clearing all"
     rm -rf $VENV_DIR
-    docker rm -f app-chatbot
-    docker rmi app-chatbot
+    docker-compose down --volumes --rmi all
     handler
 }
 

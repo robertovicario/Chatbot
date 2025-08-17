@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+    app-chatbot:
+        build:
+            context: "."
+            dockerfile: "Dockerfile"
+        container_name: "app-chatbot"
+        image: "app-chatbot:1.0.0"
+        ports:
+            - "7860:7860"
+        volumes:
+            - "./app:/app"
