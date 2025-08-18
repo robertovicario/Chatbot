@@ -6,6 +6,8 @@ services:
             context: "."
             dockerfile: "./dev/Dockerfile"
         container_name: "app-chatbot"
+        env_file:
+            - ".env"
         image: "app-chatbot:1.0.0"
         ports:
             - "7860:7860"

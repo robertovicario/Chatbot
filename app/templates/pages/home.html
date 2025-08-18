@@ -8,7 +8,6 @@
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/home.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/components/chat.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/components/prompt.css') }}">
 {% endblock %}
 
 <!-- Jinja :: Content -->
@@ -17,28 +16,29 @@
 <!-- Jinja :: Spinner Page -->
 {% include 'includes/spinner-page.html' %}
 
-<div class="d-flex justify-content-center align-items-center w-100 vh-100 p-5 gap-5">
+<div class="d-flex justify-content-center align-items-center w-100 vh-100 gap-5">
 
     <!-- Sidebar -->
     <div class="bg-white w-25 h-100 p-3 border rounded-5"></div>
 
     <!-- Content -->
     <div class="bg-white w-75 h-100">
-        <div class="d-flex flex-column h-100">
+        <div class="d-flex flex-column justify-content-center align-items-center h-100 bg-white flex-grow-1 overflow-auto">
 
             <!-- Chat -->
-            <div class="d-flex bg-white flex-grow-1 overflow-auto">
-                <div class="d-flex flex-column bg-white w-100 h-100 p-3 flex-grow-1 overflow-auto px-5">
-                    {% import 'includes/message.html' as macros %}
-                    {% for msg in conversation %}
-                        {{ macros.message(msg) }}
-                    {% endfor %}
+            <div id="container-chat" class="d-flex flex-column bg-white w-100 h-100 flex-grow-1 overflow-auto">
+                {% import 'includes/message.html' as macros %}
+                {% for msg in conversation %}
+                    {{ macros.message(msg) }}
+                {% endfor %}
+                <div id="message-bot-loading">
+                    <svg class="text-light-emphasis" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_I8Q1{animation:spinner_qhi1 .75s linear infinite}.spinner_vrS7{animation-delay:-.375s}@keyframes spinner_qhi1{0%,100%{r:1.5px}50%{r:3px}}</style><circle class="spinner_I8Q1" cx="4" cy="12" r="1.5" fill="currentColor"/><circle class="spinner_I8Q1 spinner_vrS7" cx="12" cy="12" r="3" fill="currentColor"/><circle class="spinner_I8Q1" cx="20" cy="12" r="1.5" fill="currentColor"/></svg>
                 </div>
             </div>
 
             <!-- Prompt -->
             <form id="form-prompt" class="m-0">
-                <div class="d-flex justify-content-center align-items-center gap-3 p-3 px-4 border rounded-pill">
+                <div id="div-prompt" class="d-flex justify-content-center align-items-center gap-3 px-4 py-3 border rounded-pill">
                     <input class="input-prompt" type="text" placeholder="Ask me anything you want, I am at your service" required>
                     <button id="btn-prompt-attach" class="btn btn-light btn-prompt" type="button" name="btn-prompt-attach" title="Attach">
                         <input type="file" class="d-none">
@@ -57,4 +57,113 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const btn_prompt_submit = document.getElementById('btn-prompt-submit');
+        btn_prompt_submit.addEventListener('click', async () => {
+
+            /**
+             * Checking form validity
+             */
+            if (!document.getElementById('form-prompt').checkValidity()) return;
+            btn_prompt_submit.disabled = true;
+
+            /////////////////////////
+
+            /**
+             * Sending user prompt to render the message
+             */
+            const input_prompt = document.querySelector('.input-prompt');
+            let response = await fetch('/chat/user-message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 'prompt': input_prompt.value })
+            });
+
+            /////////////////////////
+
+            /**
+             * Updating the frontend with the user message
+             */
+            let data = await response.json();
+            const container_chat = document.getElementById('container-chat');
+            const message_bot_loading = document.getElementById('message-bot-loading');
+            if (data.user_msg_html) {
+                if (data.user_msg_html) {
+                    container_chat.insertAdjacentHTML('beforeend', data.user_msg_html);
+                    container_chat.appendChild(message_bot_loading);
+                    message_bot_loading.style = 'display: flex !important';
+                    container_chat.scrollTop = container_chat.scrollHeight;
+                }
+            }
+
+            /////////////////////////
+
+            /**
+             * Sending user prompt to generate the bot message
+             */
+            await new Promise(resolve => requestAnimationFrame(resolve));
+            response = await fetch('/chat/bot-message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 'prompt': input_prompt.value })
+            });
+
+            /////////////////////////
+
+            /**
+             * Updating the frontend with the bot message
+             */
+            data = await response.json();
+            if (data.bot_msg_html) {
+                container_chat.insertAdjacentHTML('beforeend', data.bot_msg_html);
+                message_bot_loading.style = 'display: none !important';
+                container_chat.scrollTop = container_chat.scrollHeight;
+
+                /**
+                 * Type Effect
+                 */
+                const bot_message_el = container_chat.querySelector('.message-bot:last-child');
+                if (bot_message_el) {
+                    let index = 0;
+                    const full_text = bot_message_el.textContent;
+                    bot_message_el.textContent = '';
+
+                    if (index < full_text.length) {
+                        bot_message_el.textContent += full_text.charAt(index);
+                        index++;
+                        container_chat.scrollTop = container_chat.scrollHeight;
+                        setTimeout(type_letter, 10);
+                    }
+                }
+
+                input_prompt.value = '';
+                btn_prompt_submit.disabled = false;
+            }
+        });
+    });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const container_chat = document.getElementById('container-chat');
+    let lastScrollTop = container_chat.scrollTop;
+
+    container_chat.addEventListener('scroll', () => {
+        const st = container_chat.scrollTop;
+
+        if (st < lastScrollTop) {
+            // Scroll verso l'alto: fissiamo i messaggi sotto il prompt
+            container_chat.style.flexDirection = 'column-reverse';
+        } else {
+            // Scroll verso il basso: comportamento normale
+            container_chat.style.flexDirection = 'column';
+        }
+
+        lastScrollTop = st <= 0 ? 0 : st;
+    });
+});
+
+</script>
 {% endblock %}

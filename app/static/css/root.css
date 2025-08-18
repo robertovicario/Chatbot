@@ -1,11 +1,11 @@
 /* Root */
 
 :root {
-	--primary: #96e072;
+	--primary: #55b62c;
 }
 
 ::selection {
-	color: var(--bs-primary);
+	color: var(--bs-white);
 	background-color: var(--bs-primary-bg-subtle);
 }
 
