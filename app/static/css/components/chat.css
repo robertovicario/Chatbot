@@ -79,18 +79,16 @@
 
 #container-prompt textarea {
     width: 100% !important;
-    height: auto;
-    min-height: 28px;
-    max-height: 420px;
+    max-height: 420px !important;
     margin: 0 !important;
     background-color: transparent !important;
     border: 0 !important;
-    overflow-y: hidden;
-    resize: none;
+    resize: none !important;
 }
 
 #container-prompt button {
     border: none !important;
+    border-radius: 100% !important;
 }
 
 #container-prompt button i {

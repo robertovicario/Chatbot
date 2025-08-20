@@ -39,10 +39,6 @@
             <!-- Prompt -->
             <div id="container-prompt" class="border">
                 <form>
-                    <button id="btn-prompt-attach" class="btn btn-light" type="button" name="btn-prompt-attach" title="Attach">
-                        <input type="file" class="d-none">
-                        <i class="bi bi-paperclip"></i>
-                    </button>
                     <textarea type="text" placeholder="Ask me anything you want, I am at your service" required rows="1"></textarea>
                     <button id="btn-prompt-submit" class="btn btn-primary" type="button" name="btn-prompt-submit" title="Send">
                         <i class="bi bi-arrow-up"></i>
@@ -59,24 +55,16 @@
     document.addEventListener('DOMContentLoaded', () => {
 
         /**
-         * Attaching file input click event
-         */
-        document.getElementById('btn-prompt-attach').addEventListener('click', () => {
-            document.querySelector('#btn-prompt-attach input[type="file"]').click();
-        });
-
-        /////////////////////////
-
-        /**
          * Submitting the prompt form
          */
+        const form_prompt = document.querySelector('#container-prompt form');
         const btn_prompt_submit = document.getElementById('btn-prompt-submit');
         btn_prompt_submit.addEventListener('click', async () => {
 
             /**
              * Checking form validity
              */
-            if (!document.querySelector('#container-prompt form').checkValidity()) return;
+            if (!form_prompt.checkValidity()) return;
             btn_prompt_submit.disabled = true;
 
             /////////////////////////
@@ -170,6 +158,7 @@
             const min_height = 28;
             textarea_prompt.style = 'height: auto !important;';
             textarea_prompt.style = `height: ${Math.max(textarea_prompt.scrollHeight, min_height)}px !important;`;
+            form_prompt.style = textarea_prompt.scrollHeight > min_height ? 'align-items: flex-end !important;' : 'align-items: center !important;';
         });
     });
 </script>
