@@ -46,7 +46,7 @@ deploy() {
     git push
     cd ..
     git checkout main
-    git submodule update --remote
+    # git submodule update --remote
     git add .
     git commit -m "Deployed the app"
     git push
