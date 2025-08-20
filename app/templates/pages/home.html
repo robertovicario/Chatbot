@@ -58,6 +58,7 @@
          * Submitting the prompt form
          */
         const form_prompt = document.querySelector('#container-prompt form');
+        const textarea_prompt = document.querySelector('#container-prompt textarea');
         const btn_prompt_submit = document.getElementById('btn-prompt-submit');
         btn_prompt_submit.addEventListener('click', async () => {
 
@@ -65,6 +66,8 @@
              * Checking form validity
              */
             if (!form_prompt.checkValidity()) return;
+            const user_msg = textarea_prompt.value;
+            textarea_prompt.value = '';
             btn_prompt_submit.disabled = true;
 
             /////////////////////////
@@ -72,11 +75,10 @@
             /**
              * Sending user prompt to render the message
              */
-            const textarea_prompt = document.querySelector('#container-prompt textarea');
             let response = await fetch('/chat/user-message', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 'prompt': textarea_prompt.value })
+                body: JSON.stringify({ 'prompt': user_msg })
             });
 
             /////////////////////////
@@ -105,7 +107,7 @@
             response = await fetch('/chat/bot-message', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 'prompt': textarea_prompt.value })
+                body: JSON.stringify({ 'prompt': user_msg })
             });
 
             /////////////////////////
@@ -137,7 +139,6 @@
                 }
                 type_effect();
 
-                textarea_prompt.value = '';
                 btn_prompt_submit.disabled = false;
             }
         });
@@ -153,7 +154,6 @@
         /**
          * Auto-resizing textarea
          */
-        const textarea_prompt = document.querySelector('#container-prompt textarea');
         textarea_prompt.addEventListener('input', () => {
             const min_height = 28;
             textarea_prompt.style = 'height: auto !important;';
