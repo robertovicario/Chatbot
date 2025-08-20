@@ -7,7 +7,7 @@ import os
 CONVERSATION = []
 LLM = InferenceClient(
     provider='groq',
-    api_key=os.environ['chatbot'],
+    api_key=os.environ['HF_TOKEN__Chatbot'],
 )
 
 # -------------------------
