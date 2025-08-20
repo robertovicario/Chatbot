@@ -16,17 +16,17 @@
 <!-- Jinja :: Spinner Page -->
 {% include 'includes/spinner-page.html' %}
 
-<div class="d-flex justify-content-center align-items-center w-100 vh-100 gap-5">
+<div class="d-flex justify-content-center align-items-center w-100 vh-100 p-5 gap-5">
 
     <!-- Sidebar -->
-    <div class="bg-white w-25 h-100 p-3 border rounded-5"></div>
+    <div class="bg-white w-25 h-100 p-3 border d-none d-md-block"></div>
 
     <!-- Content -->
-    <div class="bg-white w-75 h-100">
-        <div class="d-flex flex-column justify-content-center align-items-center h-100 bg-white flex-grow-1 overflow-auto">
+    <div class="bg-white w-100 w-md-75 h-100">
+        <div class="d-flex flex-column justify-content-center align-items-center h-100">
 
             <!-- Chat -->
-            <div id="container-chat" class="d-flex flex-column bg-white w-100 h-100 flex-grow-1 overflow-auto">
+            <div id="container-chat">
                 {% import 'includes/message.html' as macros %}
                 {% for msg in conversation %}
                     {{ macros.message(msg) }}
@@ -37,23 +37,18 @@
             </div>
 
             <!-- Prompt -->
-            <form id="form-prompt" class="m-0">
-                <div id="div-prompt" class="d-flex justify-content-center align-items-center gap-3 px-4 py-3 border rounded-pill">
-                    <input class="input-prompt" type="text" placeholder="Ask me anything you want, I am at your service" required>
-                    <button id="btn-prompt-attach" class="btn btn-light btn-prompt" type="button" name="btn-prompt-attach" title="Attach">
+            <div id="container-prompt" class="border">
+                <form>
+                    <button id="btn-prompt-attach" class="btn btn-light" type="button" name="btn-prompt-attach" title="Attach">
                         <input type="file" class="d-none">
                         <i class="bi bi-paperclip"></i>
                     </button>
-                    <script>
-                        document.getElementById('btn-prompt-attach').addEventListener('click', () => {
-                            document.querySelector('#btn-prompt-attach input[type="file"]').click();
-                        });
-                    </script>
-                    <button id="btn-prompt-submit" class="btn btn-primary btn-prompt" type="button" name="btn-prompt-submit" title="Send">
+                    <textarea type="text" placeholder="Ask me anything you want, I am at your service" required rows="1"></textarea>
+                    <button id="btn-prompt-submit" class="btn btn-primary" type="button" name="btn-prompt-submit" title="Send">
                         <i class="bi bi-arrow-up"></i>
                     </button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -62,13 +57,26 @@
 {% block scripts %}
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+
+        /**
+         * Attaching file input click event
+         */
+        document.getElementById('btn-prompt-attach').addEventListener('click', () => {
+            document.querySelector('#btn-prompt-attach input[type="file"]').click();
+        });
+
+        /////////////////////////
+
+        /**
+         * Submitting the prompt form
+         */
         const btn_prompt_submit = document.getElementById('btn-prompt-submit');
         btn_prompt_submit.addEventListener('click', async () => {
 
             /**
              * Checking form validity
              */
-            if (!document.getElementById('form-prompt').checkValidity()) return;
+            if (!document.querySelector('#container-prompt form').checkValidity()) return;
             btn_prompt_submit.disabled = true;
 
             /////////////////////////
@@ -76,11 +84,11 @@
             /**
              * Sending user prompt to render the message
              */
-            const input_prompt = document.querySelector('.input-prompt');
+            const textarea_prompt = document.querySelector('#container-prompt textarea');
             let response = await fetch('/chat/user-message', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 'prompt': input_prompt.value })
+                body: JSON.stringify({ 'prompt': textarea_prompt.value })
             });
 
             /////////////////////////
@@ -109,7 +117,7 @@
             response = await fetch('/chat/bot-message', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 'prompt': input_prompt.value })
+                body: JSON.stringify({ 'prompt': textarea_prompt.value })
             });
 
             /////////////////////////
@@ -127,43 +135,42 @@
                  * Type Effect
                  */
                 const bot_message_el = container_chat.querySelector('.message-bot:last-child');
-                if (bot_message_el) {
-                    let index = 0;
-                    const full_text = bot_message_el.textContent;
-                    bot_message_el.textContent = '';
+                const full_text = bot_message_el.textContent;
+                bot_message_el.textContent = '';
 
-                    if (index < full_text.length) {
-                        bot_message_el.textContent += full_text.charAt(index);
-                        index++;
+                let idx = 0;
+                function type_effect() {
+                    if (idx < full_text.length) {
+                        bot_message_el.textContent += full_text.charAt(idx);
+                        idx++;
                         container_chat.scrollTop = container_chat.scrollHeight;
-                        setTimeout(type_letter, 10);
+                        setTimeout(type_effect, 20);
                     }
                 }
+                type_effect();
 
-                input_prompt.value = '';
+                textarea_prompt.value = '';
                 btn_prompt_submit.disabled = false;
             }
         });
+
+        /////////////////////////
+
+        /**
+         * Ensuring the chat container is scrolled to the bottom
+         */
+        const container_chat = document.getElementById('container-chat');
+        container_chat.scrollTop = container_chat.scrollHeight;
+
+        /**
+         * Auto-resizing textarea
+         */
+        const textarea_prompt = document.querySelector('#container-prompt textarea');
+        textarea_prompt.addEventListener('input', () => {
+            const min_height = 28;
+            textarea_prompt.style = 'height: auto !important;';
+            textarea_prompt.style = `height: ${Math.max(textarea_prompt.scrollHeight, min_height)}px !important;`;
+        });
     });
-
-document.addEventListener('DOMContentLoaded', () => {
-    const container_chat = document.getElementById('container-chat');
-    let lastScrollTop = container_chat.scrollTop;
-
-    container_chat.addEventListener('scroll', () => {
-        const st = container_chat.scrollTop;
-
-        if (st < lastScrollTop) {
-            // Scroll verso l'alto: fissiamo i messaggi sotto il prompt
-            container_chat.style.flexDirection = 'column-reverse';
-        } else {
-            // Scroll verso il basso: comportamento normale
-            container_chat.style.flexDirection = 'column';
-        }
-
-        lastScrollTop = st <= 0 ? 0 : st;
-    });
-});
-
 </script>
 {% endblock %}
