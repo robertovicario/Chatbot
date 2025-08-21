@@ -61,6 +61,14 @@ bash cmd.sh stop
 > [!TIP]  
 > For a quicker way to stop, use `ctrl + C` to force stop the program.
 
+### `clear`
+
+If you need to clear all containers and their orphaned dependencies, you can run:
+
+```sh
+bash cmd.sh clear
+```
+
 ### `build`
 
 To generate the static files for the project, run the following command:
@@ -70,14 +78,6 @@ bash cmd.sh build
 ```
 
 After the build process completes, the static files will be available in the `build` directory.
-
-### `clear`
-
-If you need to clear all containers and their orphaned dependencies, you can run:
-
-```sh
-bash cmd.sh clear
-```
 
 ### `deploy`
 
