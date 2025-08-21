@@ -1,14 +1,18 @@
+| <img src="docs/chatbot.svg" width="128"> |
+| - |
+
 # Chatbot
 
 ## Overview
 
-...
+This project is a simple chatbot application. It provides a user-friendly interface for interacting with the chatbot, allowing users to ask questions and receive responses.
 
 ## Prerequisites
 
 > [!IMPORTANT]
 >
 > - Docker
+> - Docker Compose
 
 ## User Interface (UI)
 
