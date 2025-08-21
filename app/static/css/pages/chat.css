@@ -70,9 +70,6 @@
 
 #container-prompt {
     width: 100% !important;
-    padding: 1.5rem !important;
-    padding-top: 1rem !important;
-    padding-bottom: 1rem !important;
 }
 
 #container-prompt form {
@@ -82,9 +79,9 @@
     gap: 1rem !important;
     width: 100% !important;
     padding-top: 1rem !important;
-    padding-right: 1rem !important;
+    padding-right: 1.5rem !important;
     padding-bottom: 1rem !important;
-    padding-left: 1rem !important;
+    padding-left: 1.5rem !important;
     margin: 0 !important;
 }
 
