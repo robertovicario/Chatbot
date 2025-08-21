@@ -24,6 +24,12 @@ setup() {
     handler
 }
 
+clear() {
+    printer "🧹 Clearing all"
+    rm -rf $VENV_DIR
+    docker-compose down --volumes --rmi all
+    handler
+}
 
 build() {
     printer "🔧 Building the app"
@@ -35,13 +41,6 @@ build() {
     cp .gitignore build
     cp Dockerfile build
     cp app/README.md build
-    handler
-}
-
-clear() {
-    printer "🧹 Clearing all"
-    rm -rf $VENV_DIR
-    docker-compose down --volumes --rmi all
     handler
 }
 
@@ -60,7 +59,6 @@ deploy() {
     git push
     cd ..
     git checkout main
-    git submodule update --remote
     git add .
     git commit -m "Deployed the app"
     git push
@@ -92,16 +90,16 @@ case $1 in
     setup)
         setup
         ;;
-    build)
-        build
-        ;;
     clear)
         clear
+        ;;
+    build)
+        build
         ;;
     deploy)
         deploy
         ;;
     *)
-        echo "Usage: $0 {start|stop|setup|build|clear|deploy}"
+        echo "Usage: $0 {start|stop|setup|clear|build|deploy}"
         ;;
 esac
