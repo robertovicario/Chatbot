@@ -1,0 +1,27 @@
+<!-- Jinja :: Template -->
+{% extends 'base.html' %}
+
+<!-- Jinja :: Theme -->
+{% set theme_title = 'Error Page - Chatbot' %}
+
+<!-- Jinja :: Content -->
+{% block content %}
+<div class="d-flex flex-column justify-content-center align-items-center w-100 min-vh-100">
+
+    <!-- Jinja :: Header -->
+    {% include 'includes/navbar.html' %}
+
+    <!-- Content -->
+    <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1 p-0">
+        <div class="col-6 col-md-3 mb-4 text-center">
+            <img class="img-fluid" src="{{ url_for('static', filename='img/illustrations/error.svg') }}" alt="error.svg">
+        </div>
+        <h2 class="text-danger text-center w-50 mb-2">Error&nbsp;<span>{{ err_code }}:&nbsp;{{ err_name }}</span></h2>
+        <p class="text-dark text-center w-75 mb-4">{{ err_desc }}</p>
+        <a class="btn btn-danger" href="{{ url_for('index.page') }}">Come Back</a>
+    </div>
+
+    <!-- Jinja :: Footer -->
+    {% include 'includes/footer.html' %}
+</div>
+{% endblock %}

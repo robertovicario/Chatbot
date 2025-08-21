@@ -1,8 +1,20 @@
-/* Chat :: Components */
+/* Chat :: Pages */
+
+#container-intro {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    gap: 3rem !important;
+}
 
 #container-chat {
     display: flex !important;
     flex-direction: column !important;
+    justify-content: start !important;
+    align-items: center !important;
     flex-grow: 1 !important;
     width: 100% !important;
     padding: 3rem !important;
@@ -58,8 +70,6 @@
     border-radius: 1.5rem !important;
 }
 
-/* Prompt :: Components */
-
 #container-prompt {
     width: 100% !important;
 }
@@ -71,9 +81,9 @@
     gap: 1rem !important;
     width: 100% !important;
     padding-top: 1rem !important;
-    padding-right: 1.5rem !important;
+    padding-right: 1rem !important;
     padding-bottom: 1rem !important;
-    padding-left: 1.5rem !important;
+    padding-left: 1rem !important;
     margin: 0 !important;
 }
 
@@ -88,7 +98,6 @@
 
 #container-prompt button {
     border: none !important;
-    border-radius: 100% !important;
 }
 
 #container-prompt button i {

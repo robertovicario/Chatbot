@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <i class="bi bi-sun-fill fs-5"></i>
         <span class="ms-3">Light Mode</span>
     `;
-    const btn_theme_mode = document.getElementById('btn-theme-mode');
+    const btn_theme_mode = document.querySelector('#btn_theme_mode');
     const el = document.documentElement;
 
     function update_button(theme) {

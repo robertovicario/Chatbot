@@ -6,47 +6,50 @@
 
 <!-- Jinja :: Styles -->
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/home.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/components/chat.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/chat.css') }}">
 {% endblock %}
 
 <!-- Jinja :: Content -->
 {% block content %}
 
-<!-- Jinja :: Spinner Page -->
-{% include 'includes/spinner-page.html' %}
+<!-- Jinja :: Header -->
+{% include 'includes/header.html' %}
 
-<div class="d-flex justify-content-center align-items-center w-100 vh-100 p-5 gap-5">
+<!-- Jinja :: Sidebar -->
+{% include 'includes/sidebar.html' %}
 
-    <!-- Sidebar -->
-    <div class="bg-white w-25 h-100 p-3 border d-none d-md-block"></div>
+<!-- Content -->
+<div class="d-flex flex-column justify-content-center align-items-center w-75">
 
-    <!-- Content -->
-    <div class="bg-white w-100 w-md-75 h-100">
-        <div class="d-flex flex-column justify-content-center align-items-center h-100">
+    <!-- Chat -->
+    <div id="container-chat">
 
-            <!-- Chat -->
-            <div id="container-chat">
-                {% import 'includes/message.html' as macros %}
-                {% for msg in conversation %}
-                    {{ macros.message(msg) }}
-                {% endfor %}
-                <div id="message-bot-loading">
-                    <svg class="text-light-emphasis" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_I8Q1{animation:spinner_qhi1 .75s linear infinite}.spinner_vrS7{animation-delay:-.375s}@keyframes spinner_qhi1{0%,100%{r:1.5px}50%{r:3px}}</style><circle class="spinner_I8Q1" cx="4" cy="12" r="1.5" fill="currentColor"/><circle class="spinner_I8Q1 spinner_vrS7" cx="12" cy="12" r="3" fill="currentColor"/><circle class="spinner_I8Q1" cx="20" cy="12" r="1.5" fill="currentColor"/></svg>
-                </div>
+        <!-- Messages -->
+        <div id="container-intro">
+            <div class="col-12 col-md-6 mb-4 text-center">
+                <img class="img-fluid" src="{{ url_for('static', filename='img/illustrations/home.svg') }}" alt="home.svg">
             </div>
-
-            <!-- Prompt -->
-            <div id="container-prompt" class="border">
-                <form>
-                    <textarea type="text" placeholder="Ask me anything you want, I am at your service" required rows="1"></textarea>
-                    <button id="btn-prompt-submit" class="btn btn-primary" type="button" name="btn-prompt-submit" title="Send">
-                        <i class="bi bi-arrow-up"></i>
-                    </button>
-                </form>
-            </div>
+            <h2 class="text-center mb-0">Ask me anything, I'm at your service 🤗</h2>
+        </div>
+        <div id="message-bot-loading">
+            <svg class="text-light-emphasis" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_I8Q1{animation:spinner_qhi1 .75s linear infinite}.spinner_vrS7{animation-delay:-.375s}@keyframes spinner_qhi1{0%,100%{r:1.5px}50%{r:3px}}</style><circle class="spinner_I8Q1" cx="4" cy="12" r="1.5" fill="currentColor"/><circle class="spinner_I8Q1 spinner_vrS7" cx="12" cy="12" r="3" fill="currentColor"/><circle class="spinner_I8Q1" cx="20" cy="12" r="1.5" fill="currentColor"/></svg>
         </div>
     </div>
+
+    <!-- Prompt -->
+    <div id="container-prompt" class="border rounded-4">
+        <form>
+            <textarea type="text" placeholder="Make a question" required rows="1"></textarea>
+            <button id="btn-prompt-submit" class="btn btn-primary" type="button" name="btn-prompt-submit" title="Send">
+                <i class="bi bi-arrow-up"></i>
+            </button>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer w-100 mt-4 text-center">
+        <span id="copyright">Copyright &copy; YYYY <span class="text-primary">Chatbot</span>. All rights reserved.</span>
+    </footer>
 </div>
 {% endblock %}
 
@@ -59,7 +62,7 @@
          */
         const form_prompt = document.querySelector('#container-prompt form');
         const textarea_prompt = document.querySelector('#container-prompt textarea');
-        const btn_prompt_submit = document.getElementById('btn-prompt-submit');
+        const btn_prompt_submit = document.querySelector('#btn-prompt-submit');
         btn_prompt_submit.addEventListener('click', async () => {
 
             /**
@@ -68,9 +71,15 @@
             if (!form_prompt.checkValidity()) return;
             const user_msg = textarea_prompt.value;
             textarea_prompt.value = '';
-            btn_prompt_submit.disabled = true;
+            document.querySelector('#container-intro').style = 'display: none !important';
 
             /////////////////////////
+
+            /**
+             * Changing the button icon to indicate processing
+             */
+            const btn_prompt_submit_content = btn_prompt_submit.innerHTML;
+            btn_prompt_submit.innerHTML = '<i class="bi bi-stop-fill"></i>';
 
             /**
              * Sending user prompt to render the message
@@ -87,8 +96,8 @@
              * Updating the frontend with the user message
              */
             let data = await response.json();
-            const container_chat = document.getElementById('container-chat');
-            const message_bot_loading = document.getElementById('message-bot-loading');
+            const container_chat = document.querySelector('#container-chat');
+            const message_bot_loading = document.querySelector('#message-bot-loading');
             if (data.user_msg_html) {
                 if (data.user_msg_html) {
                     container_chat.insertAdjacentHTML('beforeend', data.user_msg_html);
@@ -122,24 +131,36 @@
                 container_chat.scrollTop = container_chat.scrollHeight;
 
                 /**
-                 * Type Effect
+                 * Typing Effect
                  */
                 const bot_message_el = container_chat.querySelector('.message-bot:last-child');
                 const full_text = bot_message_el.textContent;
                 bot_message_el.textContent = '';
 
                 let idx = 0;
-                function type_effect() {
-                    if (idx < full_text.length) {
+                let typing = true;
+
+                const truncate_typing = () => {
+                    if (typing) {
+                        typing = false;
+                        container_chat.scrollTop = container_chat.scrollHeight;
+                        btn_prompt_submit.innerHTML = btn_prompt_submit_content;
+                    }
+                };
+                btn_prompt_submit.addEventListener('click', truncate_typing);
+
+                function typing_effect() {
+                    if (idx < full_text.length && typing) {
                         bot_message_el.textContent += full_text.charAt(idx);
                         idx++;
                         container_chat.scrollTop = container_chat.scrollHeight;
-                        setTimeout(type_effect, 20);
+                        setTimeout(typing_effect, 20);
+                    } else {
+                        typing = false;
+                        btn_prompt_submit.innerHTML = btn_prompt_submit_content;
                     }
                 }
-                type_effect();
-
-                btn_prompt_submit.disabled = false;
+                typing_effect();
             }
         });
 
@@ -148,7 +169,7 @@
         /**
          * Ensuring the chat container is scrolled to the bottom
          */
-        const container_chat = document.getElementById('container-chat');
+        const container_chat = document.querySelector('#container-chat');
         container_chat.scrollTop = container_chat.scrollHeight;
 
         /**
