@@ -25,7 +25,7 @@ This project is a simple chatbot application. It provides a user-friendly interf
 Usage:
 
 ```sh
-bash cmd.sh {start|stop|setup|clear|build|deploy}
+bash cmd.sh {start|stop|setup|clear|deploy}
 ```
 
 ### `setup`
@@ -68,16 +68,6 @@ If you need to clear all containers and their orphaned dependencies, you can run
 ```sh
 bash cmd.sh clear
 ```
-
-### `build`
-
-To generate the static files for the project, run the following command:
-
-```sh
-bash cmd.sh build
-```
-
-After the build process completes, the static files will be available in the `./app/build` directory.
 
 ### `deploy`
 
