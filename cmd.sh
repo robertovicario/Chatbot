@@ -24,6 +24,20 @@ setup() {
     handler
 }
 
+
+build() {
+    printer "🔧 Building the app"
+    mkdir -p build
+    rm -rf build/*
+    cp -r app build/app
+    rm -f build/app/README.md
+    cp .gitattributes build
+    cp .gitignore build
+    cp Dockerfile build
+    cp app/README.md build
+    handler
+}
+
 clear() {
     printer "🧹 Clearing all"
     rm -rf $VENV_DIR
@@ -78,6 +92,9 @@ case $1 in
     setup)
         setup
         ;;
+    build)
+        build
+        ;;
     clear)
         clear
         ;;
@@ -85,6 +102,6 @@ case $1 in
         deploy
         ;;
     *)
-        echo "Usage: $0 {start|stop|setup|clear|deploy}"
+        echo "Usage: $0 {start|stop|setup|build|clear|deploy}"
         ;;
 esac

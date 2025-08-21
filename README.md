@@ -16,7 +16,7 @@ This project is a simple chatbot application. It provides a user-friendly interf
 
 ## User Interface (UI)
 
-| <a href="https://robertovicario-chatbot.hf.space"><img src="./docs/cover.png" alt="UI" width="384"></a> |
+| <a href="https://robertovicario-chatbot.hf.space"><img src="docs/cover.png" alt="UI" width="384"></a> |
 | :-: |
 | **Home - Chatbot** |
 
@@ -25,7 +25,7 @@ This project is a simple chatbot application. It provides a user-friendly interf
 Usage:
 
 ```sh
-bash cmd.sh {start|stop|setup|clear|deploy}
+bash cmd.sh {start|stop|setup|clear|build|deploy}
 ```
 
 ### `setup`
@@ -60,6 +60,16 @@ bash cmd.sh stop
 
 > [!TIP]  
 > For a quicker way to stop, use `ctrl + C` to force stop the program.
+
+### `build`
+
+To generate the static files for the project, run the following command:
+
+```sh
+bash cmd.sh build
+```
+
+After the build process completes, the static files will be available in the `build` directory.
 
 ### `clear`
 
