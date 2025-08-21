@@ -38,12 +38,8 @@
 
 <body>
 
-    <!-- Main -->
-    <div class="d-flex flex-column justify-content-center align-items-center w-100 min-vh-100">
-
-        <!-- Jinja :: Content -->
-        {% block content %}{% endblock %}
-    </div>
+    <!-- Jinja :: Content -->
+    {% block content %}{% endblock %}
 
     <!-- Jinja :: Flash -->
     {% include 'includes/flash.html' %}
