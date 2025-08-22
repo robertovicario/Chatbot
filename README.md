@@ -19,7 +19,7 @@ This project is a simple chatbot application. It provides a user-friendly interf
 >
 > - Docker
 > - Docker Compose
-> - 
+
 ## Instructions
 
 Usage:
