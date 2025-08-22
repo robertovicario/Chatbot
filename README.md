@@ -7,18 +7,18 @@
 
 This project is a simple chatbot application. It provides a user-friendly interface for interacting with the chatbot, allowing users to ask questions and receive responses.
 
-## User Interface (UI)
-
-| <a href="https://robertovicario-chatbot.hf.space"><img src="docs/cover.png" alt="UI" width="512"></a> |
-| :-: |
-| **Home - Chatbot** |
-
 ## Prerequisites
 
 > [!IMPORTANT]
 >
 > - Docker
 > - Docker Compose
+
+## User Interface (UI)
+
+| <a href="https://robertovicario-chatbot.hf.space"><img src="docs/cover.png" alt="UI" width="512"></a> |
+| :-: |
+| **Home - Chatbot** |
 
 ## Instructions
 
