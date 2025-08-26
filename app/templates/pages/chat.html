@@ -179,6 +179,16 @@
             textarea_prompt.style = `height: ${Math.max(textarea_prompt.scrollHeight, min_height)}px !important;`;
             form_prompt.style = textarea_prompt.scrollHeight > min_height ? 'align-items: flex-end !important;' : 'align-items: center !important;';
         });
+
+        /**
+         * Submitting the form on Enter key press (without Shift)
+         */
+        textarea_prompt.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                btn_prompt_submit.click();
+            }
+        });
     });
 </script>
 {% endblock %}
