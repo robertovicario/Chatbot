@@ -16,7 +16,7 @@ This project is a simple chatbot application. It provides a user-friendly interf
 
 ## User Interface (UI)
 
-| <a href="https://robertovicario-chatbot.hf.space"><img src="docs/cover.png" alt="UI" width="512"></a> |
+| <a href="https://chatbot-af5u.onrender.com"><img src="docs/cover.png" alt="UI" width="512"></a> |
 | :-: |
 | **Home - Chatbot** |
 
